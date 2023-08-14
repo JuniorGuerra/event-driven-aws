@@ -1,0 +1,6 @@
+go 1.18
+
+use (
+    ./cdk-snack-app
+    ./create-orders-handler-func
+)

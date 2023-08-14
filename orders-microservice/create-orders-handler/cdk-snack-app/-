@@ -1,0 +1,5 @@
+{
+  "CdkSnackAppStack": {
+    "CreateOrdersHandler": "https://mqa23y0q5k.execute-api.us-east-2.amazonaws.com"
+  }
+}
