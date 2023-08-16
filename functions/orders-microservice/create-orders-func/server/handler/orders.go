@@ -6,7 +6,6 @@ import (
 	"app/server/utils"
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"os"
 
@@ -94,7 +93,6 @@ func CreateOrder(_ context.Context, e events.APIGatewayV2HTTPRequest) (events.AP
 
 	client := cloudwatchevents.NewFromConfig(cfg)
 
-	fmt.Println(os.Getenv(EVENT_BUS_NAME))
 	_, err = client.PutEvents(context.Background(),
 		&cloudwatchevents.PutEventsInput{
 			Entries: []types.PutEventsRequestEntry{

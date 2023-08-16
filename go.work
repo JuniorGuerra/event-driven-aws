@@ -1,6 +1,6 @@
 go 1.19
 
 use (
-	./functions/create-orders-func
-	./functions/process-orders-func
+	./functions/orders-microservice/create-orders-func
+	./functions/orders-microservice/process-orders-func
 )
