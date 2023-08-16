@@ -1,0 +1,6 @@
+go 1.19
+
+use (
+	./functions/create-orders-func
+	./functions/process-orders-func
+)
