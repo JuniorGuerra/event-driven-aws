@@ -1,9 +1,6 @@
 import { SSTConfig } from "sst";
-import { Api, EventBus } from "sst/constructs";
-import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
-import * as cdk from 'aws-cdk-lib';
-import * as iam from 'aws-cdk-lib/aws-iam';
 import { ordersMicroservice } from "./stacks/orders-microservice/stack";
+import { paymentMicroservice } from "./stacks/payment-microservice/stack";
 
 
 export default {
@@ -19,6 +16,6 @@ export default {
       runtime: "go1.x",
     });
 
-    app.stack(ordersMicroservice)
+    app.stack(ordersMicroservice).stack(paymentMicroservice)
   },
 } satisfies SSTConfig;

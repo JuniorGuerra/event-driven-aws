@@ -3,4 +3,5 @@ go 1.19
 use (
 	./functions/orders-microservice/create-orders-func
 	./functions/orders-microservice/process-orders-func
+	./functions/payment-microservice/create-payment-func
 )

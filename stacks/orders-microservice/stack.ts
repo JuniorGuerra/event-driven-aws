@@ -47,9 +47,9 @@ export function ordersMicroservice({ stack }: StackContext) {
                 pattern: {
                     detailType: ["order.created"],
                 },
-                targets: {
-                    function: "functions/orders-microservice/process-orders-func/cmd/main.go"
-                }
+                // targets: {
+                //     function: "functions/payment-microservice/create-payment-func/cmd/main.go"
+                // }
             }
         }
     })
@@ -69,8 +69,16 @@ export function ordersMicroservice({ stack }: StackContext) {
         },
     });
 
+    new cdk.CfnOutput(stack, 'EventBusArn', {
+        value: bus.eventBusArn,
+    });
+
     stack.addOutputs({
         ApiEndpoint: createOrdersApi.url,
         EventBus: bus.eventBusName,
     });
+
+    return {
+        bus
+    }
 }
