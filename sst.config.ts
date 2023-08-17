@@ -1,12 +1,13 @@
 import { SSTConfig } from "sst";
-import { ordersMicroservice } from "./stacks/orders-microservice/stack";
-import { paymentMicroservice } from "./stacks/payment-microservice/stack";
+import { microservices } from "./stacks/stack";
+
+
 
 
 export default {
   config(_input) {
     return {
-      name: "orders-microservice-v2",
+      name: "orders-microservice-v5",
       region: "us-east-1",
     };
   },
@@ -16,6 +17,8 @@ export default {
       runtime: "go1.x",
     });
 
-    app.stack(ordersMicroservice).stack(paymentMicroservice)
+    
+    app.stack(microservices)
+
   },
 } satisfies SSTConfig;

@@ -1,23 +1,13 @@
 package main
 
 import (
-	"context"
-	"fmt"
+	"process_orders/server/handler"
 
-	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/davecgh/go-spew/spew"
 )
 
-func readOrder(_ context.Context, event events.CloudWatchEvent) error {
-	fmt.Println(event.Detail)
-	fmt.Printf("received event of type %q\n", event.DetailType)
-	spew.Dump(event)
-	return nil
-}
-
 func main() {
-	lambda.Start(readOrder)
+	lambda.Start(handler.CreatePayment)
 }
 
 //  proximos pasos:

@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -11,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
 
-const EnvironmentDBTableName = "DYNAMODB_TABLE_NAME_PAYMENT"
+const EnvironmentDBTableName = "DYNAMODB_TABLE_NAME"
 
 type tableOrders struct {
 	DynamoDbClient *dynamodb.DynamoDB
@@ -34,9 +33,8 @@ func init() {
 	}
 }
 
-func (orders PaymentHandler) UpdatePayment(payment ItemPaymentDB) error {
+func (orders PaymentHandler) UpdatePayment(payment ItemOrderDB) error {
 
-	fmt.Println("Se esta actualizano la tabla: ", paymentT.TableName)
 	_, err := paymentT.DynamoDbClient.UpdateItem(&dynamodb.UpdateItemInput{
 		TableName: aws.String(paymentT.TableName),
 
@@ -51,7 +49,6 @@ func (orders PaymentHandler) UpdatePayment(payment ItemPaymentDB) error {
 		},
 
 		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
-
 			":s": {
 				S: aws.String(payment.Status),
 			},
@@ -68,7 +65,7 @@ func (orders PaymentHandler) UpdatePayment(payment ItemPaymentDB) error {
 	return err
 }
 
-func (orders PaymentHandler) GetPaymentItem(orderId string) (ItemPaymentDB, error, bool) {
+func (orders PaymentHandler) GetPaymentItem(orderId string) (ItemOrderDB, error, bool) {
 	itemOuput, err := paymentT.DynamoDbClient.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(paymentT.TableName),
 		Key: map[string]*dynamodb.AttributeValue{
@@ -80,20 +77,20 @@ func (orders PaymentHandler) GetPaymentItem(orderId string) (ItemPaymentDB, erro
 
 	if err != nil {
 		log.Printf("Couldn't read item in table. error - %v\n", err)
-		return ItemPaymentDB{}, err, false
+		return ItemOrderDB{}, err, false
 	}
 
 	if itemOuput.Item == nil {
-		return ItemPaymentDB{}, nil, false
+		return ItemOrderDB{}, nil, false
 	}
 
-	item := ItemPaymentDB{}
+	item := ItemOrderDB{}
 
 	err = dynamodbattribute.UnmarshalMap(itemOuput.Item, &item)
 
 	if err != nil {
 		log.Printf("Couldn't unmarshal in item. error - %v\n", err)
-		return ItemPaymentDB{}, err, false
+		return ItemOrderDB{}, err, false
 	}
 
 	return item, nil, true
