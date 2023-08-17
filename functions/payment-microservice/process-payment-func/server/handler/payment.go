@@ -40,7 +40,7 @@ func ProcessPayment(_ context.Context, e events.APIGatewayV2HTTPRequest) (events
 
 	handlerPayment := repository.PaymentHandler{}
 
-	item, err, exist := handlerPayment.GetPaymentItem(eventItem.OrderId)
+	item, exist, err := handlerPayment.GetPaymentItem(eventItem.OrderId)
 
 	if err != nil {
 		return utils.ErrorResponse(utils.ErrorSMS{

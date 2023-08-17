@@ -7,7 +7,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
-	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
 )
 
 const EnvironmentDBTableName = "DYNAMODB_TABLE_NAME"
@@ -63,35 +62,4 @@ func (orders PaymentHandler) UpdatePayment(payment ItemOrderDB) error {
 	}
 
 	return err
-}
-
-func (orders PaymentHandler) GetPaymentItem(orderId string) (ItemOrderDB, error, bool) {
-	itemOuput, err := paymentT.DynamoDbClient.GetItem(&dynamodb.GetItemInput{
-		TableName: aws.String(paymentT.TableName),
-		Key: map[string]*dynamodb.AttributeValue{
-			"order_id": {
-				S: aws.String(orderId),
-			},
-		},
-	})
-
-	if err != nil {
-		log.Printf("Couldn't read item in table. error - %v\n", err)
-		return ItemOrderDB{}, err, false
-	}
-
-	if itemOuput.Item == nil {
-		return ItemOrderDB{}, nil, false
-	}
-
-	item := ItemOrderDB{}
-
-	err = dynamodbattribute.UnmarshalMap(itemOuput.Item, &item)
-
-	if err != nil {
-		log.Printf("Couldn't unmarshal in item. error - %v\n", err)
-		return ItemOrderDB{}, err, false
-	}
-
-	return item, nil, true
 }

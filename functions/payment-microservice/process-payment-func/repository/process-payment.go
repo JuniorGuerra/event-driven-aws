@@ -68,7 +68,7 @@ func (orders PaymentHandler) UpdatePayment(payment ItemPaymentDB) error {
 	return err
 }
 
-func (orders PaymentHandler) GetPaymentItem(orderId string) (ItemPaymentDB, error, bool) {
+func (orders PaymentHandler) GetPaymentItem(orderId string) (ItemPaymentDB, bool, error) {
 	itemOuput, err := paymentT.DynamoDbClient.GetItem(&dynamodb.GetItemInput{
 		TableName: aws.String(paymentT.TableName),
 		Key: map[string]*dynamodb.AttributeValue{
@@ -80,11 +80,11 @@ func (orders PaymentHandler) GetPaymentItem(orderId string) (ItemPaymentDB, erro
 
 	if err != nil {
 		log.Printf("Couldn't read item in table. error - %v\n", err)
-		return ItemPaymentDB{}, err, false
+		return ItemPaymentDB{}, false, err
 	}
 
 	if itemOuput.Item == nil {
-		return ItemPaymentDB{}, nil, false
+		return ItemPaymentDB{}, false, nil
 	}
 
 	item := ItemPaymentDB{}
@@ -93,8 +93,8 @@ func (orders PaymentHandler) GetPaymentItem(orderId string) (ItemPaymentDB, erro
 
 	if err != nil {
 		log.Printf("Couldn't unmarshal in item. error - %v\n", err)
-		return ItemPaymentDB{}, err, false
+		return ItemPaymentDB{}, false, err
 	}
 
-	return item, nil, true
+	return item, true, nil
 }

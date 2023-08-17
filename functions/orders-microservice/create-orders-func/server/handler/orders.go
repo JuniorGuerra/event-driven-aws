@@ -20,9 +20,11 @@ const EVENT_BUS_NAME = "EVENT_BUS_NAME"
 
 func CreateOrder(_ context.Context, e events.APIGatewayV2HTTPRequest) (events.APIGatewayV2HTTPResponse, error) {
 	var createOrder domain.CreateOrderRequest
+
 	err := json.Unmarshal([]byte(e.Body), &createOrder)
 
 	if err != nil {
+
 		return utils.ErrorResponse(utils.ErrorSMS{
 			StatusCode: http.StatusBadRequest,
 			Message:    err.Error(),
@@ -36,6 +38,7 @@ func CreateOrder(_ context.Context, e events.APIGatewayV2HTTPRequest) (events.AP
 		}), nil
 	}
 	if createOrder.UserID == "" {
+
 		return utils.ErrorResponse(utils.ErrorSMS{
 			StatusCode: http.StatusBadRequest,
 			Message:    "UserId is required",
