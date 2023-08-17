@@ -21,7 +21,7 @@
     "total_price": 20000
 }`
 
-#### PROCESS ORDER
+#### PROCESS PAYMENT
 
 ```http
   POST /api/v1/process
@@ -38,6 +38,30 @@
 }`
 
 
+##### TEST SVC
+
+```http
+  POST https://gov8k9cna1.execute-api.us-east-1.amazonaws.com/api/v1/create
+```
+
+`{
+    "user_id": "1",
+    "item": "arroz con mango",
+    "quantity": 12,
+    "total_price": 20000
+}`
+
+```http
+  POST https://gov8k9cna1.execute-api.us-east-1.amazonaws.com/api/v1/process
+```
+
+`{
+    "order_id": "id created before",
+    "status": "success" // if not is success, make error
+}`
+
+
+
 
 ## Deployment
 You need have the sst cli
@@ -48,5 +72,6 @@ To deploy this project run
 
 ```bash
   npm run deploy
+  npm run remove
 ```
 

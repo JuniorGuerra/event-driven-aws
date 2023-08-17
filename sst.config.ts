@@ -7,8 +7,8 @@ import { microservices } from "./stacks/stack";
 export default {
   config(_input) {
     return {
-      name: "event-driven-aws-microservices",
-      region: "us-east-2",
+      name: "aws-event-microservices",
+      region: "us-east-1",
     };
   },
 

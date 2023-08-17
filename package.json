@@ -1,5 +1,5 @@
 {
-  "name": "orders-microservice",
+  "name": "aws-event-microservice",
   "version": "0.0.0",
   "private": true,
   "type": "module",
