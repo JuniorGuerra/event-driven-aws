@@ -47,10 +47,15 @@ export function ordersMicroservice({ stack }: StackContext) {
                 pattern: {
                     detailType: ["order.created"],
                 },
-                // targets: {
-                //     function: "functions/payment-microservice/create-payment-func/cmd/main.go"
-                // }
-            }
+            },
+            // "order_paid": {
+            //     pattern: {
+            //         detailType: ["order.paid"],
+            //     },
+            //     targets: {
+            //         function: "functions/orders-microservice/process-orders-func/cmd/main.go"
+            //     }
+            // }
         }
     })
 
@@ -63,15 +68,15 @@ export function ordersMicroservice({ stack }: StackContext) {
                 permissions: [table, bus],
                 environment: {
                     DYNAMODB_TABLE_NAME: table.tableName,
-                    EVENT_BUS_NAME: bus.eventBusName
+                    // EVENT_BUS_NAME: bus.eventBusName
                 }
             },
         },
     });
 
-    new cdk.CfnOutput(stack, 'EventBusArn', {
-        value: bus.eventBusArn,
-    });
+    // new cdk.CfnOutput(stack, 'EventBusArn', {
+    //     value: bus.eventBusArn,
+    // });
 
     stack.addOutputs({
         ApiEndpoint: createOrdersApi.url,

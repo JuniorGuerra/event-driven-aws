@@ -22,7 +22,6 @@ export function paymentMicroservice({ stack }: StackContext) {
 
     });
 
-
     const role = new iam.Role(stack, 'Role', {
         assumedBy: new iam.ServicePrincipal('dynamodb.amazonaws.com'),
     });
@@ -38,8 +37,6 @@ export function paymentMicroservice({ stack }: StackContext) {
         operations: [dynamodb.Operation.PUT_ITEM],
     });
 
-
-    
     const funcion = new Function(stack, "process_payment", {
         handler: "functions/payment-microservice/create-payment-func/cmd/main.go",
         environment: {
@@ -48,15 +45,30 @@ export function paymentMicroservice({ stack }: StackContext) {
         permissions: [table],
     })
 
-
     const { bus } = use(ordersMicroservice);
 
     bus.addTargets(stack, "order_created", {
         funcion: funcion,
     })
 
+    const processPaymentApi = new Api(stack, "process-payment-api", {
+        routes: {
+            "POST /api/v1/process": "functions/payment-microservice/process-payment-func/cmd/main.go",
+        },
+        defaults: {
+            function: {
+                permissions: [table],
+                environment: {
+                    DYNAMODB_TABLE_NAME: table.tableName,
+                    // EVENT_BUS_NAME: bus.eventBusName
+                }
+            },
+        },
+    });
+
+
     stack.addOutputs({
-        // ApiEndpoint: createpaymentApi.url,
+        ApiEndpoint: "POST - " + processPaymentApi.url + "/api/v1/process",
         // EventBus: bus.eventBusName,
         TableName: table.tableName
     });

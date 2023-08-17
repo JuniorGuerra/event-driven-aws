@@ -10,8 +10,6 @@ import (
 	"github.com/davecgh/go-spew/spew"
 )
 
-const EVENT_BUS_NAME = "EVENT_BUS_NAME"
-
 func CreatePayment(_ context.Context, event events.CloudWatchEvent) error {
 
 	var eventItem domain.OrderResult
@@ -28,11 +26,10 @@ func CreatePayment(_ context.Context, event events.CloudWatchEvent) error {
 	err = handlerPayment.CreatePayment(repository.CreatePaymentDB{
 		OrderId:    eventItem.OrderId,
 		TotalPrice: eventItem.TotalPrice,
-		Status:     "in order",
+		Status:     "unpaid",
 	})
 
 	if err != nil {
-		// loguear error...
 		spew.Dump(err.Error())
 	}
 

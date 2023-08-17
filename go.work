@@ -4,4 +4,5 @@ use (
 	./functions/orders-microservice/create-orders-func
 	./functions/orders-microservice/process-orders-func
 	./functions/payment-microservice/create-payment-func
+	./functions/payment-microservice/process-payment-func
 )

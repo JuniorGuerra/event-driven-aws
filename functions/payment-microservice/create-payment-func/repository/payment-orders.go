@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -9,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/dynamodb"
 	"github.com/aws/aws-sdk-go/service/dynamodb/dynamodbattribute"
-	"github.com/google/uuid"
 )
 
 const EnvironmentDBTableName = "DYNAMODB_TABLE_NAME"
@@ -36,14 +34,11 @@ func init() {
 }
 
 func (orders PaymentHandler) CreatePayment(payment CreatePaymentDB) error {
-	fmt.Println(payment)
-	id := uuid.New()
-	payment.OrderId = id.String()
-
 	item, err := dynamodbattribute.MarshalMap(payment)
 
 	if err != nil {
 		log.Printf("failed to marshal struct into dynamodb record. error - %s\n", err.Error())
+		// se podria crear un evento que escuche los errores y los notifique mas completo en este lugar
 		return err
 	}
 
@@ -54,6 +49,7 @@ func (orders PaymentHandler) CreatePayment(payment CreatePaymentDB) error {
 
 	if err != nil {
 		log.Printf("Couldn't add item to table. error - %v\n", err)
+		// se podria crear un evento que escuche los errores y los notifique mas completo en este lugar
 	}
 
 	return err
