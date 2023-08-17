@@ -7,8 +7,8 @@ import { microservices } from "./stacks/stack";
 export default {
   config(_input) {
     return {
-      name: "orders-microservice-v5",
-      region: "us-east-1",
+      name: "event-driven-aws-microservices",
+      region: "us-east-2",
     };
   },
 
